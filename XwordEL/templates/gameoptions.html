@@ -1,0 +1,493 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<style>
+  [data-loading] {
+    display: none;
+  }
+  .fade {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .hidden {
+    display: none;
+  }
+  .file-progress-loading {
+    margin-left: 10px;
+    width: 45px;
+    height: 40px;
+    background: linear-gradient(
+        black calc(1 * 100% / 6),
+        #fff 0 calc(3 * 100% / 6),
+        black 0
+      ),
+      linear-gradient(
+        black calc(2 * 100% / 6),
+        #fff 0 calc(4 * 100% / 6),
+        black 0
+      ),
+      linear-gradient(
+        black calc(3 * 100% / 6),
+        #fff 0 calc(5 * 100% / 6),
+        black 0
+      );
+    background-size: 10px 400%;
+    background-repeat: no-repeat;
+    animation: matrix 1s infinite linear;
+  }
+
+  @keyframes matrix {
+    0% {
+      background-position: 0% 100%, 50% 100%, 100% 100%;
+    }
+
+    100% {
+      background-position: 0% 0%, 50% 0%, 100% 0%;
+    }
+  }
+
+  .scrollable-container {
+    overflow: scroll;
+    max-height: 300px;
+    width: 100%;
+  }
+</style>
+
+<script src="https://unpkg.com/htmx.org/dist/ext/loading-states.js"></script>
+<div class="game-option-warpper">
+  <div class="head-section">
+    <div class="head-section-content">
+      <h2>Game options</h2>
+    </div>
+    <!--
+    <img src="{% static 'img/gameoptions.png' %}" alt="game options" />-->
+  </div>
+  <div class="game-section1">
+    <div class="game-option-card active">
+      <p>Choose clues type:</p>
+      <div class="custom-radio">
+        <input
+          type="radio"
+          id="radio-clues-type-thai"
+          name="clues-type"
+          value="thai"
+        />
+        <label class="radio-label" for="radio-clues-type-thai">
+          <div class="radio-circle"></div>
+          <span class="radio-text">แปลไทย</span>
+        </label>
+
+        <input
+          type="radio"
+          id="radio-clues-type-eng"
+          name="clues-type"
+          value="eng"
+        />
+        <label class="radio-label" for="radio-clues-type-eng">
+          <div class="radio-circle"></div>
+          <span class="radio-text">English meaning</span>
+        </label>
+      </div>
+      <br />
+
+      <p>Choose number of clues:</p>
+      <div class="custom-slider-container">
+        <input
+          type="range"
+          min="1"
+          max="7"
+          value="3"
+          class="custom-slider"
+          id="clue-silder"
+        />
+        <div class="custom-slider-value">3</div>
+        <div>row(s)</div>
+      </div>
+
+      <script>
+        let slider_elem = document.getElementById("clue-silder");
+        let slider_value_elem = document.getElementsByClassName(
+          "custom-slider-value"
+        )[0];
+        slider_elem.addEventListener("input", () => {
+          slider_value_elem.innerHTML = slider_elem.value;
+          document.getElementById("id_clues_num_normal").value =
+            slider_elem.value;
+          document.getElementById("id_clues_num_filemode").value =
+            slider_elem.value;
+        });
+
+        document
+          .querySelectorAll('input[name="clues-type"]')
+          .forEach((elem) => {
+            elem.addEventListener("click", () => {
+              //check if radio button is checked inject the value to the hidden input
+              if (elem.checked) {
+                document.getElementById("id_clues_type_normal").value =
+                  elem.value;
+                document.getElementById("id_clues_type_filemode").value =
+                  elem.value;
+              }
+            });
+          });
+      </script>
+    </div>
+  </div>
+  <div class="game-section2">
+    <div class="game-option-card fade">
+      <div id="difficulty-section">
+        <p>Choose difficulty:</p>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="radio-difficulty-letter"
+            name="difficulty"
+            value="letter"
+          />
+          <label class="radio-label" for="radio-difficulty-letter">
+            <div class="radio-circle"></div>
+            <span class="radio-text">each letter</span>
+          </label>
+
+          <input
+            type="radio"
+            id="radio-difficulty-word"
+            name="difficulty"
+            value="word"
+          />
+          <label class="radio-label" for="radio-difficulty-word">
+            <div class="radio-circle"></div>
+            <span class="radio-text">whole word</span>
+          </label>
+        </div>
+        <br />
+
+        <p>Choose hint type:</p>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="radio-hint-type-1"
+            name="hint"
+            value="1"
+            checked
+          />
+          <label class="radio-label" for="radio-hint-type-1">
+            <div class="radio-circle"></div>
+            <span class="radio-text">None</span>
+          </label>
+
+          <input type="radio" id="radio-hint-type-2" name="hint" value="2" />
+          <label class="radio-label" for="radio-hint-type-2">
+            <div class="radio-circle"></div>
+            <span class="radio-text">Vowel letter</span>
+          </label>
+
+          <input type="radio" id="radio-hint-type-3" name="hint" value="3" />
+          <label class="radio-label" for="radio-hint-type-3">
+            <div class="radio-circle"></div>
+            <span class="radio-text">Random letter</span>
+          </label>
+        </div>
+      </div>
+      <script>
+        document
+          .querySelectorAll('input[name="difficulty"]')
+          .forEach((elem) => {
+            elem.addEventListener("click", () => {
+              //check if radio button is checked inject the value to the hidden input
+              if (elem.checked) {
+                document.getElementById("id_difficulty_normal").value =
+                  elem.value;
+                document.getElementById("id_difficulty_filemode").value =
+                  elem.value;
+              }
+            });
+          });
+
+        document.querySelectorAll('input[name="hint"]').forEach((elem) => {
+          elem.addEventListener("click", () => {
+            //check if radio button is checked inject the value to the hidden input
+            if (elem.checked) {
+              document.getElementById("id_hint_normal").value = elem.value;
+              document.getElementById("id_hint_filemode").value = elem.value;
+            }
+          });
+        });
+      </script>
+    </div>
+  </div>
+  <div class="game-section3">
+    <div class="game-option-card fade">
+      <div id="game-choosing-section">
+        <p>Choose a game mode:</p>
+        <form method="POST" action="{% url 'gameUI' %}" id="game-mode-form">
+          {% csrf_token %}
+          <input type="hidden" name="gamemode" value="normal" />
+
+          <input
+            type="hidden"
+            id="id_clues_type_normal"
+            name="clues_type"
+            value=""
+          />
+          <input
+            type="hidden"
+            id="id_difficulty_normal"
+            name="difficulty"
+            value=""
+          />
+          <input
+            type="hidden"
+            id="id_clues_num_normal"
+            name="clues_num"
+            value="3"
+          />
+          <input type="hidden" id="id_hint_normal" name="hint" value="1" />
+        </form>
+        <div class="game-mode-btn-warpper">
+          <button type="submit" form="game-mode-form" class="game-mode-btn">
+            Normal mode
+          </button>
+          <button id="XwordModalBtn" class="game-mode-btn">File mode</button>
+        </div>
+      </div>
+      <script>
+        document
+          .querySelectorAll(
+            'input[name="difficulty"], input[name="clues-type"]'
+          )
+          .forEach((elem) => {
+            elem.addEventListener("click", () => {
+              console.log("normal");
+              console.log(
+                document.getElementById("id_clues_type_normal").value +
+                  " " +
+                  document.getElementById("id_difficulty_normal").value
+              );
+              console.log("filemode");
+              console.log(
+                document.getElementById("id_clues_type_filemode").value +
+                  " " +
+                  document.getElementById("id_difficulty_filemode").value
+              );
+              if (
+                document.getElementById("id_clues_type_normal").value != "" &&
+                document.getElementById("id_difficulty_normal").value != ""
+              ) {
+                document
+                  .getElementById("game-choosing-section")
+                  .classList.remove("fade");
+              }
+              if (
+                document.getElementById("id_clues_type_filemode").value != "" &&
+                document.getElementById("id_difficulty_filemode").value != ""
+              ) {
+                document
+                  .getElementById("game-choosing-section")
+                  .classList.remove("fade");
+              }
+            });
+          });
+      </script>
+    </div>
+  </div>
+</div>
+<!-- The Modal -->
+<div id="XwordModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Upload File</h2>
+    </div>
+    <div class="modal-body">
+      {% for message in messages %}
+      <div
+        class="alert alert-{{ message.tags }} alert-dismissible fade show"
+        role="alert"
+      >
+        <strong>Message:</strong> {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor %}
+
+      <form
+        id="uploadform"
+        hx-post="{% url 'fileupload' %}"
+        enctype="multipart/form-data"
+        hx-target="#fileinfo"
+      >
+        {% csrf_token %}
+        <div class="file-option">{{ form.as_p }}</div>
+        <div
+          id="ocr-check"
+          hx-get="{% url 'OCR_API' %}"
+          hx-trigger="load"
+          hx-target="#ocr-check"
+        ></div>
+        <button name="uploadform_submit" type="submit" class="general-btn">
+          Upload
+        </button>
+        <progress id="uploadform_progress" value="0" max="100"></progress>
+      </form>
+
+      <script>
+        htmx.on("#uploadform", "htmx:xhr:progress", function (evt) {
+          if (evt.target.id == "uploadform") {
+            htmx
+              .find("#uploadform_progress")
+              .setAttribute(
+                "value",
+                (evt.detail.loaded / evt.detail.total) * 100
+              );
+            //after upload make #loading hidden
+            if (evt.detail.loaded == evt.detail.total) {
+              htmx.find("#loading").classList.remove("hidden");
+            }
+          }
+        });
+        htmx.on("#uploadform", "htmx:afterRequest", function (evt) {
+          htmx.find("#loading").classList.add("hidden");
+        });
+      </script>
+
+      <div id="loading" class="hidden">
+        <div class="file-progress-loading"></div>
+      </div>
+      <!-- file form =============================================== -->
+      <form method="POST" action="{% url 'gameUI' %}">
+        {% csrf_token %}
+        <div id="fileinfo" class="scrollable-container"></div>
+        <input type="hidden" name="gamemode" value="filemode" />
+        <input
+          type="hidden"
+          id="id_clues_type_filemode"
+          name="clues_type"
+          value=""
+        />
+        <input
+          type="hidden"
+          id="id_difficulty_filemode"
+          name="difficulty"
+          value=""
+        />
+        <input
+          type="hidden"
+          id="reset_crossword"
+          name="reset_crossword"
+          value="true"
+        />
+        <input
+          type="hidden"
+          id="id_clues_num_filemode"
+          name="clues_num"
+          value="3"
+        />
+        <input type="hidden" id="id_hint_filemode" name="hint" value="1" />
+
+        <button type="submit" class="general-btn fade" id="file-mode-play">
+          play
+        </button>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <b>Note :&nbsp;</b>
+      <p>this wordlist depend on the dictionary APIs we use&nbsp;</p>
+      <p style="color: red">and don't refresh on game&nbsp;</p>
+    </div>
+  </div>
+</div>
+<a href="{% url 'home' %}" style="text-decoration: none; color: white">
+  <div id="home-button">
+    <ion-icon name="home-outline"> </ion-icon>
+  </div>
+</a>
+<!-- ########################################## -->
+<script src="{% static 'modal.js' %}"></script>
+<script>
+  //htmx after afterRequest
+  document.body.addEventListener("htmx:afterSwap", function (evt) {
+    console.log("after swap");
+    if (document.getElementById("uploadform_progress").value == 100) {
+      console.log("100");
+      let fileinfo_elem = document.getElementById("fileinfo");
+      console.log(fileinfo_elem.textContent);
+      const wordListPattern = /word_list:\s*\((.*?)\)/s;
+      const wordList = wordListPattern.exec(fileinfo_elem.textContent)[1];
+      console.log("wordList : ", wordList);
+      let filemode_play_btn = document.getElementById("file-mode-play");
+      if (wordList) {
+        filemode_play_btn.classList.remove("fade");
+      } else {
+        filemode_play_btn.classList.add("fade");
+      }
+    }
+  });
+
+  //check if radio button ,active the next card
+  document.querySelectorAll('input[name="clues-type"]').forEach((elem) => {
+    elem.addEventListener("click", () => {
+      if (elem.checked) {
+        let card_elem = document
+          .getElementsByClassName("game-section2")[0]
+          .getElementsByClassName("game-option-card")[0];
+        let game_section2 = document.getElementsByClassName("game-section2")[0];
+        console.log(card_elem);
+        card_elem.classList.add("active");
+        card_elem.classList.remove("fade");
+
+        windowSmoothScrollTo(game_section2, 1000);
+      }
+    });
+  });
+  document.querySelectorAll('input[name="difficulty"]').forEach((elem) => {
+    elem.addEventListener("click", () => {
+      if (elem.checked) {
+        let card_elem = document
+          .getElementsByClassName("game-section3")[0]
+          .getElementsByClassName("game-option-card")[0];
+        let game_section3 = document.getElementsByClassName("game-section3")[0];
+        console.log(card_elem);
+        card_elem.classList.add("active");
+        card_elem.classList.remove("fade");
+
+        windowSmoothScrollTo(game_section3, 1000);
+      }
+    });
+  });
+  function windowSmoothScrollTo(element, duration) {
+    console.log("into function");
+    const startingY = window.scrollY;
+    const elementRect = element.getBoundingClientRect();
+
+    // Calculate the element's top position relative to the window
+    const elementTop = elementRect.top + startingY;
+
+    // Set the target to the element's top position
+    const targetY = elementTop;
+    const diff = targetY - startingY;
+    let start;
+
+    // Easing function: easeInOutCubic
+    //https://gist.github.com/gre/1650294
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+    }
+
+    function step(timestamp) {
+      if (!start) start = timestamp;
+      const time = timestamp - start;
+      let percent = Math.min(time / duration, 1);
+      percent = easeInOutCubic(percent);
+      window.scrollTo(0, startingY + diff * percent);
+      if (time < duration) {
+        window.requestAnimationFrame(step);
+      }
+    }
+
+    window.requestAnimationFrame(step);
+  }
+</script>
+{% endblock %}

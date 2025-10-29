@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="game_body">
+    <style>
+      .loading {
+        background: rgba(0, 0, 0, 0.5);
+        width: 500px;
+        margin: 0 auto;
+        border-radius: 10px;
+        border: 4px solid transparent;
+        position: fixed;
+        padding: 1px;
+        /* on top of everything */
+        z-index: 9999;
+      
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .loading:before {
+        content: '';
+        border: 1px solid #fff;
+        border-radius: 10px;
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        bottom: -4px;
+        left: -4px;
+      }
+      .loading .loadingBar {
+        position: absolute;
+        border-radius: 10px;
+        top: 0;
+        right: 100%;
+        bottom: 0;
+        left: 0;
+        background: #fff;
+        width: 0;
+        animation: borealisBar 0.5s linear infinite;
+      }
+      
+      @keyframes borealisBar {
+        0% {
+          left: 0%;
+          right: 100%;
+          width: 0%;
+        }
+        20% {
+          left: 0%;
+          right: 75%;
+          width: 25%;
+        }
+        80% {
+          right: 0%;
+          left: 75%;
+          width: 25%;
+        }
+        100% {
+          left: 100%;
+          right: 0%;
+          width: 0%;
+        }
+      }
+    </style>
+    <form method="POST" class="get_percentage" name="get_percentage" hx-post="{% url 'getpercentage' %}" hx-target="#percentage_value">
+      {% csrf_token %}
+      <div class="percentage_warpper">
+        <div id="percentage_bar" style="position:absolute; top:0; left:0;"></div>
+        <div id="percentage_text" style="position:absolute; top:0; left:0;"></div>
+        <div id="percentage_value" class="percentage" style="display:none;"></div>
+      </div>
+    </form>
+
+    <form method="POST" id="crossword_form" class="game_container" name="crossword_form" autocomplete="off" hx-post="{% url 'gengame' %}" hx-target="#game">
+      {% csrf_token %}
+      <div id="loading" class="loading" style="display: none;">
+        <div class="loadingBar"></div>
+      </div>
+      <div id="game" class="grid_game">
+        <div class="Xwordtable_wrapper"></div>
+        <div class="cluestable_wrapper"></div>
+        <div class="game_button">
+          <input type="submit" name="check_crossword" value="Load" id="crossword_answer" class="button" />
+
+          <!--      
+          <input type="submit" name="check_crossword" value="Check" id="crossword_answer" class="button" />
+          <input type="reset" name="reset_crossword" value="Reset" class="button" />
+           
+          <input type="button" name="show_hint" value="hint" class="button" />
+  
+          <input type="submit" name="reset_session" value="reset Session (for debug)" class="button" />
+          <input type="submit" name="reset_wordlist" value="reset Word (for debug)" class="button" />
+                 -->
+        </div>
+      </div>
+    </form>
+    <script>
+      // loading bar
+      //before request is sent
+      document.addEventListener('htmx:beforeRequest', function (evt) {
+        document.getElementById('loading').style.display = 'block'
+      })
+      //after request is sent
+      document.addEventListener('htmx:afterRequest', function (evt) {
+        document.getElementById('loading').style.display = 'none'
+        document.getElementById('congrats').style.display = 'none'
+      
+        if (document.querySelectorAll('.cluestable tr').length == 0) {
+          document.getElementById('congrats').style.display = 'block'
+        }
+      })
+      //progress the percentage bar
+      document.addEventListener('htmx:afterSwap', function (evt) {
+        if (evt.detail.target.id == 'percentage_value') {
+          let percentage = document.getElementById('percentage_value').innerHTML
+          //percentage  = width of the bar (dvh)
+          document.getElementById('percentage_bar').style.width = percentage + 'dvw'
+          document.getElementById('percentage_text').innerHTML = percentage + '/100 %'
+        }
+      })
+    </script>
+    <div id="congrats" style="display: none;">
+      <div class="congrats_pane">
+        <h1>Well done!</h1>
+        <p>You have completed the crossword</p>
+        <p id="congrats_countdown"></p>
+      </div>
+    </div>
+    <a href="{% url 'home' %}" style="text-decoration: none;color:white;">
+      <div id="home-button">
+        <ion-icon name="home-outline">
+      </ion-icon>
+      </div>
+      </a>
+    <script>
+      //click crossword_answer
+      let clicked = false
+      document.addEventListener('htmx:afterRequest', function (evt) {
+        console.log('afterRequest')
+        //percentage bar
+        if (evt.detail.target.id == 'game') {
+          htmx.trigger(document.forms['get_percentage'], 'submit')
+        }
+      
+        if (!clicked && document.querySelectorAll('.cluestable tr').length == 0 && document.querySelectorAll('.Xwordtable').length > 0) {
+          console.log('clicking')
+          //sleep count down 3 seconds visually
+          let count = 3
+          let countDown = setInterval(function () {
+            document.getElementById('congrats_countdown').innerHTML = 'generating a new crossword in ' + Math.round(count * 10) / 10 + ' seconds'
+            count -= 0.1
+            if (count < 0) {
+              clearInterval(countDown)
+      
+              document.getElementById('crossword_answer').click()
+            }
+          }, 100)
+          clicked = true
+        } else {
+          clicked = false
+        }
+      })
+    </script>
+  </div>
+{% endblock %}

@@ -1,0 +1,213 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<nav class="home-nav">
+  <ul>
+    <li class="nav-left">
+      <div class="logo-container">
+        <img src="{% static 'img/logo2.png' %}" alt="XwordEL" style="width: 50px" />
+      </div>
+    </li>
+    <li class="nav-left">
+      <button class="nav-button" id="about-button">about</button>
+    </li>
+    <li class="nav-left">
+      <button class="nav-button" id="FAQ-button">FAQ</button>
+    </li>
+    {% if user.is_authenticated %}
+    <li class="nav-right">
+      <div class="login-button-container">
+        <div class="menu-container">
+          <input type="checkbox" id="menu-toggle" />
+          <div class="menu-hamburger">
+            <span class="hamburger-line line-1"></span>
+            <span class="hamburger-line line-2"></span>
+            <span class="hamburger-line line-3"></span>
+          </div>
+          <div class="menu-items">
+            <span></span>
+            <div>
+              <button onclick="location.href='{% url 'profile' %}'">
+                account
+              </button>
+            </div>
+            <div>
+              <button
+                onclick="location.href='{% url 'logout' %}'"
+                style="color: rgb(255, 121, 121)"
+              >
+                <ion-icon name="exit-outline"></ion-icon>Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-right">
+      <div class="login-button-container">
+        <button
+          class="login-button"
+          type="button"
+          name="button"
+          onclick="window.location.href='auth/login'"
+        >
+          Login
+        </button>
+      </div>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+<div class="section-1">
+  <h1 class="xwordel">XwordEL</h1>
+  <p class="xwordel-description">Another way to learn English</p>
+  <button
+    class="start"
+    type="button"
+    name="button"
+    onclick="window.location.href='Xword/options'"
+  >
+    play game
+  </button>
+</div>
+<div class="section-2" id="about-section">
+  <h2>Dev</h2>
+  <div class="dev-info-grid">
+    <div class="item-1">
+      <div class="card reveal">
+        <div class="card-info">
+          <p class="title">Warattapob Waiarsa</p>
+          <img
+            src="{% static 'img/first.jpg' %}"
+            alt="warattapob"
+            class="dev-img"
+            loading="lazy"
+          />
+        </div>
+      </div>
+      <br />
+      <div class="card-des reveal opacity">Font-end developer</div>
+      <div class="sep-line reveal opacity"></div>
+    </div>
+    <div class="item-2">
+      <div class="card reveal">
+        <div class="card-info">
+          <p class="title">Tanawat Sombatkamrai</p>
+          <img
+            src="{% static 'img/cheeta.jpg' %}"
+            alt="tanawat"
+            class="dev-img"
+            loading="lazy"
+          />
+        </div>
+      </div>
+      <br />
+      <div class="card-des reveal opacity">Full-stack developer</div>
+      <div class="sep-line reveal opacity"></div>
+    </div>
+    <div class="item-3">
+      <div class="card reveal">
+        <div class="card-info">
+          <p class="title">Phuwadon Thongrong</p>
+          <img
+            src="{% static 'img/pat.jpg' %}"
+            alt="phuwadon"
+            class="dev-img"
+            loading="lazy"
+          />
+        </div>
+      </div>
+      <br />
+
+      <div class="card-des reveal opacity">UI/UX designer</div>
+      <div class="sep-line reveal opacity"></div>
+    </div>
+  </div>
+</div>
+<div class="section-3" id="FAQ-section">
+  <div class="FAQ-card">
+    <h2>FAQ</h2>
+    <div class="FAQ-content">
+      <div class="FAQ-item">
+        <h3>What is XwordEL?</h3>
+        <p>
+          XwordEL, also known as the XWORDEL-PROJECT, is a web application for crossword puzzles that helps with learning English vocabulary while enjoying the game.
+        </p>
+      </div>
+      <div class="FAQ-item">
+        <h3>What does XwordEL stand for?</h3>
+        <p>
+          XwordEL stands for "Crossword for English Learning."
+        </p>
+      </div>
+      <div class="FAQ-item">
+        <h3>How can I create my own crossword puzzle?</h3>
+        <p>
+          You can create your own crossword puzzle by uploading PDF or TXT files.
+        </p>
+      </div>
+      <div class="FAQ-item">
+        <h3>What's the difference between File mode and Normal mode?</h3>
+        <p>
+          In File mode, you can create your own crossword puzzles. In Normal mode, we create the crossword puzzle for you.
+        </p>
+      </div>
+      <div class="FAQ-item">
+        <h3>How do clue types work?</h3>
+        <p>
+          Choosing "Thai" will provide clues in Thai, and selecting "English" will give you clues in English.
+        </p>
+      </div>
+      <div class="FAQ-item">
+        <h3>What does "number of clue types" mean?</h3>
+        <p>
+          It refers to the different meanings words can have.
+        </p>
+      </div>
+      <div class="FAQ-item">
+        <h3>How does difficulty work?</h3>
+        <p>
+          "Each letter" mode checks the answer letter by letter, and "whole word" mode requires the entire word to be correct.
+        </p>
+      </div>
+      <div class="FAQ-item">
+        <h3>How does the vowel letter hint work?</h3>
+        <p>
+          The vowel letter hint shows the vowels (a, e, i, o, u) in the crossword puzzle.
+        </p>
+      </div>
+      <div class="FAQ-item">
+        <h3>What is the bar at the top of the game?</h3>
+        <p>
+          It represents the percentage of the puzzle that has been solved.
+        </p>
+      </div>
+      <div class="FAQ-item">
+        <h3>What do the asterisks (*) in the clue section mean?</h3>
+        <p>
+          Asterisks indicate that an exact match for a word couldn't be found, so we show the closest match. For example, if "take" is not found but "taken" is, it will show as ****n.
+        </p>
+      </div>     
+       <div class="FAQ-item">
+        <h3>Why is the percentage bar not 0% at the start or 100% at the end sometimes?</h3>
+        <p>
+          Due to the API we use, if a word is not found, it is counted as a played word, which can affect the starting or ending percentage of the bar.
+        </p>
+      </div>
+      <div class="FAQ-item">
+        <h3>Any tips?</h3>
+        <p>
+          You can click on a clue to automatically highlight the corresponding part of the puzzle.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+<footer>
+  <a href="https://github.com/ct255/XwordEL-project">
+    <p>&lt;/&gt; XWORDEL-PROJECT source code &lt;/&gt;</p>
+  </a>
+</footer>
+<!-- <button type="button" name="button" onclick="window.location.href='Xword/XwordGame'">play game</button>! -->
+
+{% endblock %}

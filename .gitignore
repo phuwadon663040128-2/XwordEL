@@ -1,0 +1,15 @@
+*.pyc
+__pycache__
+db.sqlite3
+/env
+*.env
+.venv
+.vscode
+docker-compose.yml
+dockerfile
+nltk
+FORTEST.py
+forme
+dump.rdb
+TODO
+temp.txt

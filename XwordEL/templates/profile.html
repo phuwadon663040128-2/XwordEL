@@ -1,0 +1,93 @@
+{% extends 'userformbase.html' %} {% load static %} {% block content %}
+<div class="overlay">
+  <div class="userform-warpper">
+    <span class="icon-close"><ion-icon name="close-outline"></ion-icon></span>
+    <div class="form-box login">
+      <h2>Profile</h2>
+      {% for message in messages %}
+      <div
+        class="alert alert-{{ message.tags }} alert-dismissible fade show"
+        role="alert"
+      >
+        <strong>Message:</strong> {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor %}
+
+      <div>
+        <h3>Download Played Words:</h3>
+
+        <div class="btn-downloader">
+          <button onclick="location.href='{% url 'download_played_thai' %}'">
+            Thai Words
+            <ion-icon
+              name="download-outline"
+              style="font-size: 40px"
+            ></ion-icon>
+          </button>
+          <button onclick="location.href='{% url 'download_played_eng' %}'">
+            English Words
+            <ion-icon
+              name="download-outline"
+              style="font-size: 40px"
+            ></ion-icon>
+          </button>
+        </div>
+      </div>
+      <br />
+      <form method="POST" action="">
+        {% csrf_token %}
+        <h3>Played Words Deletion:</h3>
+        <div id="delete-checklist">
+          <input
+            value="thai"
+            name="thaiWordDelete"
+            type="checkbox"
+            id="thaiWordDelete"
+          />
+          <label for="thaiWordDelete">
+            <ion-icon
+              name="close-circle-outline"
+              style="font-size: 30px"
+            ></ion-icon>
+            Thai: {{thai_played_words_count}} word(s) |
+            {{thai_played_words_percent}}%
+          </label>
+
+          <input
+            value="eng"
+            name="engWordDelete"
+            type="checkbox"
+            id="engWordDelete"
+          />
+          <label for="engWordDelete">
+            <ion-icon
+              name="close-circle-outline"
+              style="font-size: 30px"
+            ></ion-icon>
+            English: {{eng_played_words_count}} word(s) |
+            {{eng_played_words_percent}}%
+          </label>
+        </div>
+
+        <button type="submit" class="delete-btn">Delete</button>
+      </form>
+    </div>
+  </div>
+</div>
+<div id="particles-js"></div>
+<script
+  type="module"
+  src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+  nomodule
+  src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+></script>
+
+{% endblock %}

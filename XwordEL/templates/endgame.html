@@ -1,0 +1,33 @@
+<html>
+
+  <body style="background-color:'black;'">
+    <style>
+      .endgame-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 99999;
+      }
+      .endgame {
+        z-index: 100000;
+        background-color: black;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 3dvh;
+        color: white;
+      }
+    </style>
+    <div class="endgame-background">
+    <div class="endgame">look like you have played all of this word in wordlist<br/>redirect to options page.....</div></div>
+    <script>
+      setTimeout(function () {
+        window.location.href = "{% url 'options' %}"
+      }, 3000)
+    </script>
+  </body>
+</html>

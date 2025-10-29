@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/modal.css' %}" />
+
+    {% if request.path == '/Xword/options/' %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/gameoptions.css' %}" />
+    {% endif %}
+
+    {% if request.path == '/' %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}" />
+    {% endif %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;500&display=swap" rel="stylesheet" />
+
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- thumbnail -->
+    <meta property="og:title" content="XwordEL" />
+    <meta property="og:image" content="{% static 'img/tn.jpg' %}" />
+    <meta property="og:description" content="Another way to learn English" />
+    <meta property="og:url" content="https://xwordel-project.up.railway.app/" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="627" />
+
+    <title>
+      {% block title %}
+        {{ dyn_title|default:'XwordEL' }}
+      {% endblock %}
+    </title>
+
+    <script src="{% static 'htmx.min.js' %}"></script>
+  </head>
+  <body>
+    {% block content %}
+
+    {% endblock %}
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script src="{% static 'script.js' %}"></script>
+    {% if request.path == '/' %}
+      <script src="{% static 'home.js' %}"></script>
+    {% endif %}
+  </body>
+</html>

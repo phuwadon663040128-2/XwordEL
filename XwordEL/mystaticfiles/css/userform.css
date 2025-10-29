@@ -1,0 +1,362 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+:root {
+  --dark: #07041a;
+  --off-white: #f5f5f5;
+  --neo-blue: #08b9f7;
+  --neo-purple: #be3bff;
+  --off-white2: rgb(250, 250, 250);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: "Roboto";
+}
+
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #07041a;
+  overflow: hidden;
+}
+
+.helptext {
+  display: none;
+  -webkit-transition: -webkit-transform 0.5s ease;
+  transition: -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
+  color: rgb(78, 78, 78);
+}
+
+#particles-js {
+  z-index: -1;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 99dvw;
+  height: 99dvh;
+}
+
+.userform-warpper {
+  position: relative;
+  width: 400px;
+
+  border-radius: 25px;
+  background-color: var(--off-white2);
+
+  display: -webkit-box;
+
+  display: -ms-flexbox;
+
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+
+  -webkit-transition: height 0.2s ease, -webkit-transform 0.5s ease;
+
+  transition: height 0.2s ease, -webkit-transform 0.5s ease;
+
+  transition: transform 0.5s ease, height 0.2s ease;
+
+  transition: transform 0.5s ease, height 0.2s ease, -webkit-transform 0.5s ease;
+}
+
+.userform-warpper .icon-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 45px;
+  height: 45px;
+  background: #000000;
+  font-size: 2em;
+  color: var(--off-white);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom-left-radius: 20px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.userform-warpper .form-box {
+  width: 100%;
+  padding: 40px;
+}
+
+.userform-warpper h2 {
+  font-size: 2em;
+  text-align: center;
+}
+
+.userform-warpper label {
+  font-size: 1.2em;
+  color: black;
+  font-weight: bold;
+}
+
+.userform-warpper .fieldWrapper input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  border: none;
+  border-radius: 10px;
+  border-bottom: 2px solid black;
+  border-left: 5px solid black;
+  outline: none;
+  background: transparent;
+  color: var(--dark);
+  -webkit-transition: border-color 0.5s ease;
+  transition: border-color 0.5s ease;
+}
+
+.userform-warpper .userform-btn {
+  width: 100%;
+  padding: 10px 0;
+  background-color: var(--off-white);
+  border: 2px solid black;
+  font-size: 1.5em;
+  border-radius: 15px;
+}
+
+.userform-warpper .userform-btn:hover {
+  background-color: var(--neo-blue);
+  color: var(--off-white);
+  border: 2px solid var(--neo-blue);
+  -webkit-transition: background-color 0.5s ease-in, color 0.5s ease-in,
+    border-color 0.5s ease-in;
+  transition: background-color 0.5s ease-in, color 0.5s ease-in,
+    border-color 0.5s ease-in;
+}
+.userform-warpper .delete-btn {
+  width: 100%;
+  padding: 10px 0;
+  background-color: rgba(255, 0, 0, 0.5);
+
+  border: 2px solid black;
+  font-size: 1.5em;
+  border-radius: 15px;
+}
+
+.userform-warpper .delete-btn:hover {
+  background-color: rgba(255, 0, 0, 1);
+  color: var(--off-white);
+  border: 2px solid rgba(255, 0, 0, 1);
+  -webkit-transition: background-color 0.5s ease-in, color 0.5s ease-in,
+    border-color 0.5s ease-in;
+  transition: background-color 0.5s ease-in, color 0.5s ease-in,
+    border-color 0.5s ease-in;
+}
+
+.userform-warpper .userform-text {
+  padding: 10px 0;
+}
+
+.overlay {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.userform-warpper {
+  opacity: 0;
+  -webkit-transform: scale(0.5);
+  transform: scale(0.5);
+  animation: fade-in 0.5s ease forwards;
+}
+
+.alert-error {
+  color: red;
+}
+
+.alert-warning {
+  color: rgb(255, 191, 73);
+}
+
+.alert-success {
+  color: rgb(56, 240, 56);
+}
+
+.alert-dismissible {
+  padding: 2px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+}
+
+/* Delete form */
+
+#delete-checklist {
+  --disabled: #dec3c3;
+  --border-radius: 10px;
+  background: var(--background);
+  width: 100%;
+  height: 100%;
+  border-radius: var(--border-radius);
+  position: relative;
+  box-shadow: 0 10px 30px rgba(65, 72, 86, 0.05);
+  padding-top: 10px;
+  padding-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1px auto;
+  align-items: center;
+  justify-content: center;
+}
+
+#delete-checklist label {
+  color: var(--text);
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  width: fit-content;
+  transition: color 0.3s ease;
+  margin-right: 20px;
+}
+
+#delete-checklist label::before,
+#delete-checklist label::after {
+  content: "";
+  position: absolute;
+}
+
+#delete-checklist label::before {
+  height: 2px;
+  width: 8px;
+  left: -27px;
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
+
+#delete-checklist label:after {
+  height: 4px;
+  width: 4px;
+  top: 8px;
+  left: -25px;
+  border-radius: 50%;
+}
+
+#delete-checklist input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  height: 15px;
+  width: 100%;
+  outline: none;
+  border: 0;
+  margin: 0 15px 0 0;
+  cursor: pointer;
+  background: var(--background);
+  display: grid;
+  align-items: center;
+  margin-right: 20px;
+}
+
+#delete-checklist input[type="checkbox"]::before,
+#delete-checklist input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  top: auto;
+  border-radius: 2px;
+}
+
+#delete-checklist input[type="checkbox"]::before {
+  width: 0px;
+  right: 60%;
+  transform-origin: right bottom;
+}
+
+#delete-checklist input[type="checkbox"]::after {
+  width: 0px;
+  left: 40%;
+  transform-origin: left bottom;
+}
+
+#delete-checklist input[type="checkbox"]:checked + label {
+  color: var(--disabled);
+  animation: move 0.3s ease 0.1s forwards;
+}
+
+#delete-checklist input[type="checkbox"]:checked + label::before {
+  background: var(--disabled);
+  animation: slice 0.5s ease forwards;
+}
+
+@keyframes slice {
+  60% {
+    width: 100%;
+    left: 4px;
+  }
+
+  100% {
+    width: 100%;
+    left: -2px;
+    padding-left: 0;
+  }
+}
+
+.btn-downloader {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.btn-downloader button {
+  padding: 10px 20px;
+  background-color: var(--off-white);
+  border: 2px solid black;
+  font-size: 1.2em;
+  border-radius: 15px;
+  margin: 10px;
+}
+.btn-downloader button:hover {
+  background-color: var(--neo-blue);
+  color: var(--off-white);
+  border: 2px solid var(--neo-blue);
+  -webkit-transition: background-color 0.2s ease-in, color 0.2s ease-in,
+    border-color 0.2s ease-in;
+  transition: background-color 0.2s ease-in, color 0.2s ease-in,
+    border-color 0.2s ease-in;
+}

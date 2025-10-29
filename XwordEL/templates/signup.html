@@ -1,0 +1,43 @@
+{% extends 'userformbase.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="overlay">
+    <div class="userform-warpper">
+      <span class="icon-close"><ion-icon name="close-outline"></ion-icon></span>
+      <div class="form-box login">
+        <h2>sign up</h2>
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" >
+            <strong>Message:</strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+        <form method="post">
+          {% csrf_token %}
+          <!-- form -->
+          {% for field in form %}
+            <div class="fieldWrapper">
+              {{ field.label_tag }}
+              <br />
+              {{ field }}
+
+              {% if field.help_text %}
+                <span class="helptext" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</span>
+              {% endif %}
+            </div>
+          {% endfor %}
+          <!-- ========================= -->
+          <input type="submit" value="Signup" class="userform-btn" />
+          <p class="userform-text">
+            Already have an account? <a href="{% url 'login' %}">Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div id="particles-js"></div>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  
+{% endblock %}
