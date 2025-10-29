@@ -1,3 +1,7 @@
+# สมาชิกในกลุ่ม 3 คน
+นายธนวัฒน์ สมบัติกำไร รับหน้าที่เป็น full stack developer<br>
+นายภูวดล ทองรอง รับหน้าที่เป็น UX & UI Designer และ Frontend<br>
+นายวรัทภพ ไวอาสา รับหน้าที่เป็น frontend 
 
 <p align="center">
     <img src="XwordEL/mystaticfiles/img/logo1.1.png" width="100">
